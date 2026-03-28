@@ -19,7 +19,7 @@
 
     <style>
         :root {
-            /* Luxury Color Palette */
+            /* Luxury Ayurvedic Color Palette */
             --primary-green: #0A3A2A;      /* Deep Emerald */
             --secondary-green: #145A42;    /* Dark Forest */
             --gold: #D4AF37;               /* Classic Luxury Gold */
@@ -55,6 +55,40 @@
             color: var(--text-dark);
             line-height: 1.6;
             overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Background Leaves Animation Layer */
+        .leaves-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .floating-leaf-anim {
+            position: absolute;
+            bottom: -50px;
+            color: var(--primary-green);
+            opacity: 0.04;
+            animation: floatUp linear infinite;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0) rotate(0deg) scale(1); opacity: 0; }
+            10% { opacity: 0.05; }
+            90% { opacity: 0.05; }
+            100% { transform: translateY(-110vh) rotate(360deg) scale(1.5); opacity: 0; }
+        }
+
+        /* Ensure content stays above the leaves */
+        nav, section, footer, .loader-wrapper, .floating-wa {
+            position: relative;
+            z-index: 10;
         }
 
         /* Loader */
@@ -155,18 +189,6 @@
         .btn-outline-light:hover {
             background: var(--text-light);
             color: var(--primary-green);
-            transform: translateY(-3px);
-        }
-
-        .btn-outline-gold {
-            background: transparent;
-            color: var(--gold);
-            border: 1px solid var(--gold);
-        }
-
-        .btn-outline-gold:hover {
-            background: var(--gold);
-            color: var(--text-dark);
             transform: translateY(-3px);
         }
 
@@ -329,10 +351,10 @@
 
         .about-image {
             width: 100%;
+            height: auto; /* Fixed cropping issue */
+            display: block;
             border-radius: 20px 100px 20px 20px;
             box-shadow: 20px 20px 0 var(--gold-light);
-            object-fit: cover;
-            height: 600px;
         }
 
         .about-content h2 {
@@ -505,6 +527,8 @@
         .why-choose-us {
             background-color: var(--primary-green);
             color: var(--text-light);
+            background-image: radial-gradient(circle at top right, rgba(212, 175, 55, 0.05), transparent 40%),
+                              radial-gradient(circle at bottom left, rgba(212, 175, 55, 0.05), transparent 40%);
         }
 
         .why-choose-us .section-header h2 {
@@ -561,12 +585,14 @@
         /* 5. Social Proof Section */
         .social-proof {
             background-color: var(--cream);
+            overflow: hidden; /* Hide overflow for marquee */
         }
 
         .social-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 50px;
+            margin-bottom: 60px;
         }
 
         .ig-feed {
@@ -625,160 +651,224 @@
             border: none;
         }
         
-        /* Testimonial Slider simple implementation */
-        .testimonials {
-            margin-top: 80px;
+        /* Realistic Sliding Testimonials (Marquee) */
+        .testimonials-header {
             text-align: center;
+            margin-bottom: 30px;
         }
         
-        .testimonial-container {
+        .marquee-wrapper {
+            display: flex;
+            overflow: hidden;
+            user-select: none;
+            gap: 20px;
+            mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+            -webkit-mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+            padding: 20px 0;
+        }
+
+        .marquee-content {
+            flex-shrink: 0;
             display: flex;
             gap: 20px;
-            overflow-x: auto;
-            scroll-snap-type: x mandatory;
-            padding-bottom: 20px;
-            scrollbar-width: thin;
-            scrollbar-color: var(--gold) var(--beige);
+            min-width: 100%;
+            animation: scrollX 35s linear infinite;
         }
         
-        .testimonial-container::-webkit-scrollbar {
-            height: 6px;
+        .marquee-wrapper:hover .marquee-content {
+            animation-play-state: paused;
         }
-        .testimonial-container::-webkit-scrollbar-thumb {
-            background-color: var(--gold);
-            border-radius: 10px;
+
+        @keyframes scrollX {
+            from { transform: translateX(0); }
+            to { transform: translateX(calc(-100% - 20px)); }
         }
 
         .testimonial-card {
-            min-width: 300px;
-            flex: 0 0 auto;
+            width: 350px;
             background: var(--text-light);
             padding: 30px;
             border-radius: 15px;
-            scroll-snap-align: center;
             border-left: 4px solid var(--gold);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.06);
             text-align: left;
+            flex-shrink: 0;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
+            color: var(--gold-light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 600;
+            font-family: var(--font-heading);
+            box-shadow: 0 4px 10px rgba(10, 58, 42, 0.2);
+        }
+
+        .user-details h4 {
+            color: var(--primary-green);
+            font-size: 1.05rem;
+            margin: 0;
         }
 
         .stars {
             color: var(--gold);
-            margin-bottom: 15px;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
+            margin-top: 3px;
         }
 
         .testimonial-text {
             font-style: italic;
             color: #555;
-            margin-bottom: 15px;
             font-size: 0.95rem;
-        }
-
-        .testimonial-author {
-            font-weight: 600;
-            color: var(--primary-green);
+            line-height: 1.6;
         }
 
         /* 6. Location Section */
         .location {
             background-color: var(--beige);
+            background-image: url('data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23d4af37" fill-opacity="0.05"%3E%3Cpath d="M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');
         }
 
-        .map-container {
+        .location-card {
+            background: var(--text-light);
+            padding: 50px 30px;
             border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
-            position: relative;
-            height: 450px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.08);
+            border-top: 5px solid var(--gold);
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
         }
 
-        .map-container iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-
-        .map-overlay-card {
-            position: absolute;
-            top: 30px;
-            left: 30px;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            max-width: 300px;
-            border-top: 4px solid var(--gold);
-        }
-
-        .map-overlay-card h3 {
+        .location-icon-wrapper {
+            width: 80px;
+            height: 80px;
+            background: rgba(212, 175, 55, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 2.5rem;
             color: var(--primary-green);
+        }
+
+        .location-card h3 {
+            color: var(--primary-green);
+            font-size: 1.8rem;
             margin-bottom: 10px;
         }
 
-        .map-overlay-card p {
-            font-size: 0.9rem;
-            color: #555;
-            margin-bottom: 15px;
+        .location-card p {
+            color: #666;
+            margin-bottom: 25px;
+            font-size: 1.1rem;
         }
 
-        /* 7. Appointment CTA */
+        /* 7. Appointment CTA (Form) */
         .cta-section {
             text-align: center;
             color: var(--text-dark);
-            padding: 120px 5%;
-            /* Animated Gradient Background */
-            background: linear-gradient(45deg, #D4AF37, #F3E5AB, #C5A028, #D4AF37);
-            background-size: 300% 300%;
-            animation: gradientBg 6s ease infinite;
+            padding: 100px 5%;
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.2), rgba(243, 229, 171, 0.5), rgba(212, 175, 55, 0.2));
+            position: relative;
         }
 
-        @keyframes gradientBg {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        .booking-form-wrapper {
+            max-width: 600px;
+            margin: 0 auto;
+            background: var(--text-light);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            text-align: left;
         }
 
-        .cta-section h2 {
-            font-size: 3rem;
+        .booking-form-wrapper h3 {
+            text-align: center;
+            color: var(--primary-green);
+            margin-bottom: 10px;
+            font-size: 1.8rem;
+        }
+
+        .booking-form-wrapper p {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 0.95rem;
+        }
+
+        .form-group {
             margin-bottom: 20px;
         }
 
-        .cta-section p {
-            font-size: 1.2rem;
-            margin-bottom: 40px;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--primary-green);
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            font-family: var(--font-body);
+            font-size: 1rem;
+            background: var(--cream);
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--gold);
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
+            background: var(--text-light);
+        }
+
+        textarea.form-control {
+            resize: vertical;
+            min-height: 120px;
         }
 
         .btn-whatsapp-large {
+            width: 100%;
             background-color: #25D366;
             color: white;
-            font-size: 1.2rem;
-            padding: 18px 40px;
+            font-size: 1.1rem;
+            padding: 16px;
             border-radius: 50px;
             text-decoration: none;
             display: inline-flex;
             align-items: center;
+            justify-content: center;
             gap: 12px;
             font-weight: 600;
-            box-shadow: 0 10px 25px rgba(37, 211, 102, 0.4);
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(37, 211, 102, 0.3);
             transition: var(--transition);
-            animation: bounce 2s infinite;
         }
 
         .btn-whatsapp-large:hover {
             background-color: #1ebe5d;
-            transform: translateY(-5px) scale(1.05);
-            box-shadow: 0 15px 35px rgba(37, 211, 102, 0.6);
-            animation: none;
-        }
-
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
-            40% {transform: translateY(-10px);}
-            60% {transform: translateY(-5px);}
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(37, 211, 102, 0.5);
         }
 
         /* 8. Footer */
@@ -786,6 +876,8 @@
             background-color: var(--primary-green);
             color: var(--text-light);
             padding: 80px 5% 30px;
+            position: relative;
+            background-image: radial-gradient(circle at center, rgba(212, 175, 55, 0.05), transparent 70%);
         }
 
         .footer-grid {
@@ -896,14 +988,13 @@
         /* Responsive Design */
         @media (max-width: 992px) {
             .about { grid-template-columns: 1fr; }
-            .about-image { height: 400px; }
             .social-grid { grid-template-columns: 1fr; }
             .hero h1 { font-size: 3rem; }
             .footer-grid { grid-template-columns: 1fr 1fr; }
         }
 
         @media (max-width: 768px) {
-            section { padding: 60px 5%; }
+            section { padding: 60px 4%; } /* Reduced padding for mobile */
             .nav-links {
                 position: absolute;
                 top: 100%;
@@ -924,13 +1015,33 @@
             .menu-toggle { display: block; }
             .hero h1 { font-size: 2.2rem; }
             .hero p { font-size: 1rem; }
-            .about-image { height: 300px; border-radius: 20px 50px 20px 20px; }
+            
+            .about-image { border-radius: 20px 50px 20px 20px; }
             .about-stats { flex-direction: column; gap: 10px; }
             .hero-buttons { flex-direction: column; align-items: center; }
             .hero-buttons .btn { width: 100%; max-width: 300px; }
+            
+            /* Req 2: Force 2 Columns for Treatments and Why Us Grids on Mobile */
+            .treatments-grid, .features-grid { 
+                grid-template-columns: repeat(2, 1fr); 
+                gap: 12px;
+            }
+            .treatment-card, .feature-block {
+                padding: 20px 10px; /* Reduced padding to fit 2 cols */
+            }
+            .treatment-icon { font-size: 1.8rem; margin-bottom: 12px; }
+            .feature-icon { width: 50px; height: 50px; font-size: 1.3rem; margin-bottom: 12px; }
+            .treatment-card h3, .feature-block h3 { font-size: 1rem; margin-bottom: 8px; line-height: 1.3; }
+            .treatment-card p, .feature-block p { font-size: 0.8rem; margin-bottom: 0; line-height: 1.4; }
+
             .cta-section h2 { font-size: 2rem; }
             .footer-grid { grid-template-columns: 1fr; gap: 30px; }
-            .map-overlay-card { position: relative; top: 0; left: 0; width: 100%; max-width: none; border-radius: 0 0 15px 15px; }
+            .booking-form-wrapper { padding: 25px 20px; }
+        }
+        
+        @media (max-width: 400px) {
+            /* Fallback if screen is extremely small, revert to 1 column to avoid overflow */
+            .treatments-grid, .features-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -958,7 +1069,7 @@
             <li><a href="#why-us">Why Us</a></li>
             <li><a href="#testimonials">Reviews</a></li>
             <li><a href="#location">Location</a></li>
-            <li><a href="https://wa.me/918722422536" class="btn btn-gold" style="color:var(--text-dark); padding: 8px 20px;">Book Now</a></li>
+            <li><a href="#book" class="btn btn-gold" style="color:var(--text-dark); padding: 8px 20px;">Book Now</a></li>
         </ul>
     </nav>
 
@@ -968,8 +1079,8 @@
             <h1 class="heading-gold-underline">Rejuvenate Your Skin & Hair Naturally</h1>
             <p>Ayurvedic Expertise Meets Modern Aesthetic Care. Discover the true essence of holistic wellness and celebrity-grade treatments at Sri Sainath Clinic.</p>
             <div class="hero-buttons">
-                <a href="https://wa.me/918722422536" target="_blank" class="btn btn-gold">
-                    <i class="fa-brands fa-whatsapp"></i> Book Appointment
+                <a href="#book" class="btn btn-gold">
+                    <i class="fa-solid fa-calendar-check"></i> Book Appointment
                 </a>
                 <a href="https://www.youtube.com/@Drkarthikkumar" target="_blank" class="btn btn-outline-light">
                     <i class="fa-brands fa-youtube"></i> Watch on YouTube
@@ -981,7 +1092,7 @@
     <!-- 2. About Section -->
     <section class="about" id="about">
         <div class="about-image-wrapper animate-on-scroll">
-            <!-- High quality placeholder image fitting a premium doctor -->
+            <!-- Image naturally scaling to fix cropping -->
             <img src="WhatsApp Image 2026-02-22 at 10.45.36 PM.jpeg" onerror="this.src='https://images.unsplash.com/photo-1622253692010-333f2da6031d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'" alt="Dr. Karthik Habib" class="about-image">
         </div>
         <div class="about-content animate-on-scroll delay-1">
@@ -1028,46 +1139,35 @@
         </div>
         
         <div class="treatments-grid">
-            <!-- Card 1 -->
             <div class="treatment-card animate-on-scroll">
                 <i class="fa-solid fa-hand-holding-droplet treatment-icon"></i>
-                <h3>Hair Fall Treatment</h3>
-                <p>Arrest hair fall naturally with our potent Ayurvedic formulations that strengthen follicles from within.</p>
+                <h3>Hair Fall Control</h3>
+                <p>Arrest hair fall naturally with potent formulations that strengthen roots.</p>
             </div>
-            
-            <!-- Card 2 -->
             <div class="treatment-card animate-on-scroll delay-1">
                 <i class="fa-solid fa-leaf treatment-icon"></i>
-                <h3>Ayurvedic Hair Regrowth</h3>
-                <p>Stimulate dormant roots and accelerate healthy growth using time-tested herbal oil therapies.</p>
+                <h3>Hair Regrowth</h3>
+                <p>Stimulate dormant roots using time-tested herbal oil therapies.</p>
             </div>
-
-            <!-- Card 3 -->
             <div class="treatment-card animate-on-scroll delay-2">
                 <i class="fa-solid fa-spa treatment-icon"></i>
                 <h3>Acne & Pimples</h3>
-                <p>Clear your complexion with deep-cleansing natural detox therapies that prevent future breakouts.</p>
+                <p>Clear your complexion with deep-cleansing natural detox therapies.</p>
             </div>
-
-            <!-- Card 4 -->
             <div class="treatment-card animate-on-scroll">
                 <i class="fa-regular fa-face-smile-beam treatment-icon"></i>
-                <h3>Skin Glow & Pigmentation</h3>
-                <p>Restore your natural radiance and even out skin tone with our luxury herbal facials and serums.</p>
+                <h3>Skin Glow</h3>
+                <p>Restore radiance and even out tone with luxury herbal serums.</p>
             </div>
-
-            <!-- Card 5 -->
             <div class="treatment-card animate-on-scroll delay-1">
                 <i class="fa-solid fa-wand-magic-sparkles treatment-icon"></i>
                 <h3>Anti-Aging Care</h3>
-                <p>Reverse the signs of aging with rejuvenating Rasayana therapies designed to firm and lift skin.</p>
+                <p>Reverse signs of aging with rejuvenating firming therapies.</p>
             </div>
-
-            <!-- Card 6 -->
             <div class="treatment-card animate-on-scroll delay-2">
                 <i class="fa-solid fa-wind treatment-icon"></i>
-                <h3>Dandruff & Scalp Care</h3>
-                <p>Eliminate flakiness and soothe scalp irritation with bespoke purifying treatments.</p>
+                <h3>Scalp Care</h3>
+                <p>Eliminate flakiness and soothe irritation with purifying treatments.</p>
             </div>
         </div>
     </section>
@@ -1082,31 +1182,28 @@
         <div class="features-grid">
             <div class="feature-block animate-on-scroll">
                 <div class="feature-icon"><i class="fa-solid fa-mortar-pestle"></i></div>
-                <h3>100% Natural Formulations</h3>
-                <p>Pure, chemical-free Ayurvedic medicines and oils freshly prepared for maximum efficacy.</p>
+                <h3>100% Natural</h3>
+                <p>Pure, chemical-free Ayurvedic medicines.</p>
             </div>
-            
             <div class="feature-block animate-on-scroll delay-1">
                 <div class="feature-icon"><i class="fa-solid fa-user-doctor"></i></div>
-                <h3>Personalized Consultation</h3>
-                <p>Every skin and body type is unique. We tailor protocols specifically to your Dosha.</p>
+                <h3>Personalized Care</h3>
+                <p>Protocols specifically tailored to your Dosha.</p>
             </div>
-
             <div class="feature-block animate-on-scroll delay-2">
                 <div class="feature-icon"><i class="fa-solid fa-microscope"></i></div>
                 <h3>Modern Diagnostics</h3>
-                <p>Bridging the gap between ancient healing and contemporary dermatological analysis.</p>
+                <p>Bridging ancient healing and contemporary analysis.</p>
             </div>
-
             <div class="feature-block animate-on-scroll delay-3">
                 <div class="feature-icon"><i class="fa-solid fa-star"></i></div>
                 <h3>Celebrity Trusted</h3>
-                <p>A massive social media presence and the go-to clinic for high-profile clients.</p>
+                <p>The go-to clinic for high-profile clients.</p>
             </div>
         </div>
     </section>
 
-    <!-- 5. Social Proof Section -->
+    <!-- 5. Social Proof & Realistic Testimonials -->
     <section class="social-proof" id="testimonials">
         <div class="section-header animate-on-scroll">
             <h2 class="heading-gold-underline">Results That Speak</h2>
@@ -1121,19 +1218,19 @@
                 </h3>
                 <div class="ig-feed">
                     <a href="https://www.instagram.com/p/DGNM23FRWnG/" target="_blank" class="ig-item">
-                        <img src="Screenshot 2026-02-22 231710.png" alt="IG Post 1">
+                        <img src="Screenshot 2026-02-22 231710.png" onerror="this.src='https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?auto=format&fit=crop&w=400&q=80'" alt="IG Post 1">
                         <div class="ig-overlay"><i class="fa-brands fa-instagram"></i></div>
                     </a>
                     <a href="https://www.instagram.com/p/DBVgPiLPV4J/?img_index=1" target="_blank" class="ig-item">
-                        <img src="Screenshot 2026-02-22 231653.png" alt="IG Post 2">
+                        <img src="Screenshot 2026-02-22 231653.png" onerror="this.src='https://images.unsplash.com/photo-1515377905703-c4788e51af15?auto=format&fit=crop&w=400&q=80'" alt="IG Post 2">
                         <div class="ig-overlay"><i class="fa-brands fa-instagram"></i></div>
                     </a>
                     <a href="https://www.instagram.com/p/DAnMK0qvIpV/" target="_blank" class="ig-item">
-                        <img src="Screenshot 2026-02-22 231633.png" alt="IG Post 3">
+                        <img src="Screenshot 2026-02-22 231633.png" onerror="this.src='https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?auto=format&fit=crop&w=400&q=80'" alt="IG Post 3">
                         <div class="ig-overlay"><i class="fa-brands fa-instagram"></i></div>
                     </a>
                     <a href="https://www.instagram.com/p/C-ZYa3GP0Dv/?img_index=1" target="_blank" class="ig-item">
-                        <img src="Screenshot 2026-02-22 231615.png" alt="IG Post 4">
+                        <img src="Screenshot 2026-02-22 231615.png" onerror="this.src='https://images.unsplash.com/photo-1552693673-1bf958298935?auto=format&fit=crop&w=400&q=80'" alt="IG Post 4">
                         <div class="ig-overlay"><i class="fa-brands fa-instagram"></i></div>
                     </a>
                 </div>
@@ -1145,68 +1242,166 @@
                     <i class="fa-brands fa-youtube" style="color:#FF0000"></i> Featured Insight
                 </h3>
                 <div class="yt-video">
-                    <!-- Standard YouTube embed, displaying the video and thumbnail automatically -->
-                    <iframe src="https://www.youtube.com/embed/L00xGDZr0ZM" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    <iframe src="https://www.youtube.com/watch?v=L00xGDZr0ZM&t=6s" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                 </div>
             </div>
         </div>
 
-        <!-- Testimonials Slider -->
-        <div class="testimonials animate-on-scroll delay-2">
-            <div class="testimonial-container">
+        <!-- Animated Realistic Testimonials -->
+        <div class="testimonials-header animate-on-scroll delay-2" style="margin-top: 50px;">
+            <h3 style="color: var(--primary-green); font-family: var(--font-heading);">Patient Reviews</h3>
+        </div>
+        
+        <div class="marquee-wrapper animate-on-scroll delay-2">
+            <!-- First Set -->
+            <div class="marquee-content">
                 <div class="testimonial-card">
-                    <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
-                    <p class="testimonial-text">"I struggled with severe hair fall for years. Dr. Karthik's Ayurvedic oils completely changed my scalp health. Truly grateful!"</p>
-                    <p class="testimonial-author">- Priya S.</p>
+                    <div class="user-info">
+                        <div class="user-avatar">P</div>
+                        <div class="user-details">
+                            <h4>Priya S.</h4>
+                            <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                        </div>
+                    </div>
+                    <p class="testimonial-text">"I struggled with severe hair fall for years. Dr. Karthik's Ayurvedic oils completely changed my scalp health. Truly grateful and highly recommend to everyone!"</p>
                 </div>
+                
                 <div class="testimonial-card">
-                    <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
-                    <p class="testimonial-text">"The acne treatment is magic. No harsh chemicals, just pure natural healing. My skin has never looked this radiant."</p>
-                    <p class="testimonial-author">- Rahul M.</p>
+                    <div class="user-info">
+                        <div class="user-avatar">R</div>
+                        <div class="user-details">
+                            <h4>Rahul M.</h4>
+                            <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i></div>
+                        </div>
+                    </div>
+                    <p class="testimonial-text">"The acne treatment is pure magic. No harsh chemicals, just natural healing. My skin has never looked this radiant. Best Ayurvedic doctor in Karnataka."</p>
                 </div>
+
                 <div class="testimonial-card">
-                    <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
-                    <p class="testimonial-text">"The clinic feels like a luxury spa, and the doctor is incredibly knowledgeable. Highly recommend the anti-aging therapies."</p>
-                    <p class="testimonial-author">- Anita K.</p>
+                    <div class="user-info">
+                        <div class="user-avatar">A</div>
+                        <div class="user-details">
+                            <h4>Anita K.</h4>
+                            <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                        </div>
+                    </div>
+                    <p class="testimonial-text">"The clinic feels like a luxury spa, and the doctor is incredibly knowledgeable. He patiently listened to my issues. My pigmentation is almost gone!"</p>
                 </div>
+
                 <div class="testimonial-card">
-                    <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
-                    <p class="testimonial-text">"Best Ayurvedic dermatologist in the city. Saw visible hair regrowth within 3 months. Professional and attentive."</p>
-                    <p class="testimonial-author">- Vikram D.</p>
+                    <div class="user-info">
+                        <div class="user-avatar">V</div>
+                        <div class="user-details">
+                            <h4>Vikram D.</h4>
+                            <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                        </div>
+                    </div>
+                    <p class="testimonial-text">"Outstanding results for my dandruff issue. Saw visible changes within 3 weeks. Professional, attentive, and the medicines are very effective."</p>
+                </div>
+            </div>
+            
+            <!-- Duplicated Set for Seamless Loop -->
+            <div class="marquee-content" aria-hidden="true">
+                <div class="testimonial-card">
+                    <div class="user-info">
+                        <div class="user-avatar">P</div>
+                        <div class="user-details">
+                            <h4>Priya S.</h4>
+                            <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                        </div>
+                    </div>
+                    <p class="testimonial-text">"I struggled with severe hair fall for years. Dr. Karthik's Ayurvedic oils completely changed my scalp health. Truly grateful and highly recommend to everyone!"</p>
+                </div>
+                
+                <div class="testimonial-card">
+                    <div class="user-info">
+                        <div class="user-avatar">R</div>
+                        <div class="user-details">
+                            <h4>Rahul M.</h4>
+                            <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i></div>
+                        </div>
+                    </div>
+                    <p class="testimonial-text">"The acne treatment is pure magic. No harsh chemicals, just natural healing. My skin has never looked this radiant. Best Ayurvedic doctor in Karnataka."</p>
+                </div>
+
+                <div class="testimonial-card">
+                    <div class="user-info">
+                        <div class="user-avatar">A</div>
+                        <div class="user-details">
+                            <h4>Anita K.</h4>
+                            <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                        </div>
+                    </div>
+                    <p class="testimonial-text">"The clinic feels like a luxury spa, and the doctor is incredibly knowledgeable. He patiently listened to my issues. My pigmentation is almost gone!"</p>
+                </div>
+
+                <div class="testimonial-card">
+                    <div class="user-info">
+                        <div class="user-avatar">V</div>
+                        <div class="user-details">
+                            <h4>Vikram D.</h4>
+                            <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                        </div>
+                    </div>
+                    <p class="testimonial-text">"Outstanding results for my dandruff issue. Saw visible changes within 3 weeks. Professional, attentive, and the medicines are very effective."</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- 6. Clinic Location -->
+    <!-- 6. Clinic Location (Replaced Map with Card) -->
     <section class="location" id="location">
         <div class="section-header animate-on-scroll">
             <h2 class="heading-gold-underline">Visit Our Clinic</h2>
             <p>Step into a world of natural luxury and advanced care.</p>
         </div>
 
-        <div class="map-container animate-on-scroll">
-            <!-- Standard Map iframe -->
-            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15382.793744923766!2d75.12285!3d15.35625!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bb8d7332e146529%3A0xc3c6b84742a170fb!2sHubballi%2C%20Karnataka!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-            
-            <div class="map-overlay-card">
-                <h3>Sri Sainath Clinic</h3>
-                <p><i class="fa-solid fa-location-dot" style="color:var(--gold)"></i> Elite Ayurvedic Skin & Hair Care Center</p>
-                <p><i class="fa-solid fa-clock" style="color:var(--gold)"></i> Mon - Sat: 10:00 AM - 9:00 PM</p>
-                <a href="https://maps.app.goo.gl/pKTgkkRjUh4Vz2iT6" target="_blank" class="btn btn-gold" style="width:100%; margin-top:10px; font-size: 0.9rem;">
-                    Get Directions <i class="fa-solid fa-arrow-right"></i>
-                </a>
+        <div class="location-card animate-on-scroll">
+            <div class="location-icon-wrapper">
+                <i class="fa-solid fa-map-location-dot"></i>
             </div>
+            <h3>Sri Sainath Clinic</h3>
+            <p>Hubballi, Karnataka<br><span style="font-size: 0.9rem; color: #888;">Elite Ayurvedic Skin & Hair Care Center</span></p>
+            
+            <div style="margin: 20px 0; border-top: 1px dashed #ddd; border-bottom: 1px dashed #ddd; padding: 15px 0;">
+                <p style="margin: 0; color: var(--primary-green); font-weight: 500;">
+                    <i class="fa-solid fa-clock" style="color:var(--gold)"></i> Timings: Mon - Sat (10:00 AM - 9:00 PM)
+                </p>
+            </div>
+
+            <a href="https://maps.app.goo.gl/pKTgkkRjUh4Vz2iT6" target="_blank" class="btn btn-gold" style="width: 100%; font-size: 1.1rem; padding: 16px;">
+                <i class="fa-solid fa-location-arrow"></i> Click Here to Get Our Clinic Location
+            </a>
         </div>
     </section>
 
-    <!-- 7. Appointment CTA -->
-    <section class="cta-section animate-on-scroll">
-        <h2>Begin Your Natural Transformation Today</h2>
-        <p>Your journey to flawless skin and healthy hair is just a message away. Consult with Dr. Karthik Habib directly.</p>
-        <a href="https://wa.me/918722422536" target="_blank" class="btn-whatsapp-large">
-            <i class="fa-brands fa-whatsapp" style="font-size: 1.5rem;"></i> Book Your Consultation
-        </a>
+    <!-- 7. Smart Appointment Booking Form CTA -->
+    <section class="cta-section" id="book">
+        <div class="booking-form-wrapper animate-on-scroll">
+            <h3>Begin Your Transformation</h3>
+            <p>Fill out the details below to book your consultation. You will be redirected to WhatsApp to confirm your slot.</p>
+            
+            <form id="wa-booking-form">
+                <div class="form-group">
+                    <label for="patientName">Patient Full Name</label>
+                    <input type="text" id="patientName" class="form-control" placeholder="e.g., Jane Doe" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="patientPhone">Contact Number</label>
+                    <input type="tel" id="patientPhone" class="form-control" placeholder="e.g., +91 98765 43210" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="patientSymptom">Primary Symptoms / Concern</label>
+                    <textarea id="patientSymptom" class="form-control" placeholder="Briefly describe your condition (e.g., Severe hair fall for 6 months, Acne marks on cheeks)..." required></textarea>
+                </div>
+
+                <button type="submit" class="btn-whatsapp-large">
+                    <i class="fa-brands fa-whatsapp" style="font-size: 1.5rem;"></i> Book Appointment via WhatsApp
+                </button>
+            </form>
+        </div>
     </section>
 
     <!-- 8. Footer -->
@@ -1262,12 +1457,50 @@
                 }, 800);
             }
         };
-
-        // Standard load event
         window.addEventListener('load', hideLoader);
-        
-        // Failsafe: Hide loader after 3 seconds even if images/fonts take too long
-        setTimeout(hideLoader, 3000);
+        setTimeout(hideLoader, 3000); // Failsafe
+
+        // Generate Floating Ayurvedic Leaves
+        function generateLeaves() {
+            const container = document.createElement('div');
+            container.classList.add('leaves-container');
+            document.body.appendChild(container);
+            
+            // Create 15 floating leaves
+            for (let i = 0; i < 15; i++) {
+                const leaf = document.createElement('div');
+                leaf.classList.add('floating-leaf-anim');
+                leaf.innerHTML = '<i class="fa-solid fa-leaf"></i>';
+                
+                // Randomize position, size, and speed
+                leaf.style.left = `${Math.random() * 100}vw`;
+                leaf.style.fontSize = `${1 + Math.random() * 2}rem`;
+                leaf.style.animationDuration = `${15 + Math.random() * 20}s`;
+                leaf.style.animationDelay = `${Math.random() * 10}s`;
+                
+                container.appendChild(leaf);
+            }
+        }
+        generateLeaves(); // Initialize background effect
+
+        // Smart WhatsApp Booking Form Logic
+        document.getElementById('wa-booking-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('patientName').value.trim();
+            const phone = document.getElementById('patientPhone').value.trim();
+            const symptom = document.getElementById('patientSymptom').value.trim();
+            
+            // Format the message for WhatsApp
+            const message = `Hello Dr. Karthik Clinic,%0A%0AI would like to request an appointment.%0A%0A*Patient Details:*%0A👤 Name: ${name}%0A📞 Phone: ${phone}%0A🩺 Condition/Symptoms:%0A${symptom}%0A%0APlease let me know the available time slots.`;
+            
+            // Clinic WhatsApp Number
+            const waNumber = '918722422536';
+            const waUrl = `https://wa.me/${waNumber}?text=${message}`;
+            
+            // Open in new tab/app
+            window.open(waUrl, '_blank');
+        });
 
         // Navbar Scroll Effect
         const navbar = document.getElementById('navbar');
@@ -1316,7 +1549,7 @@
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('is-visible');
-                    observer.unobserve(entry.target); // Run animation only once
+                    observer.unobserve(entry.target);
                 }
             });
         }, observerOptions);
@@ -1326,8 +1559,4 @@
         });
     </script>
 </body>
-
 </html>
-
-
-
