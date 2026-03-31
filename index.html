@@ -226,7 +226,7 @@
 
         .nav-links {
             display: flex;
-            gap: 30px;
+            gap: 25px;
             list-style: none;
         }
 
@@ -582,9 +582,51 @@
             color: #ccc;
         }
 
-        /* 5. Social Proof Section */
-        .social-proof {
+        /* 5. Certificates Section */
+        .certificates {
             background-color: var(--cream);
+            background-image: radial-gradient(circle at center, rgba(212, 175, 55, 0.03), transparent 70%);
+        }
+
+        .certificates-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            align-items: stretch; /* Keep columns uniform */
+        }
+
+        .cert-card {
+            background: var(--text-light);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            transition: var(--transition);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .cert-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(212, 175, 55, 0.2);
+            border-color: var(--gold);
+            z-index: 2;
+        }
+
+        .cert-card img {
+            max-width: 100%;
+            height: auto;
+            max-height: 400px;
+            object-fit: contain; /* CRUCIAL: Ensures original proportions, NO CROPPING */
+            border-radius: 5px;
+            display: block;
+        }
+
+        /* 6. Social Proof Section */
+        .social-proof {
+            background-color: var(--beige);
             overflow: hidden; /* Hide overflow for marquee */
         }
 
@@ -736,9 +778,9 @@
             line-height: 1.6;
         }
 
-        /* 6. Location Section */
+        /* 7. Location Section */
         .location {
-            background-color: var(--beige);
+            background-color: var(--cream);
             background-image: url('data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23d4af37" fill-opacity="0.05"%3E%3Cpath d="M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');
         }
 
@@ -778,7 +820,7 @@
             font-size: 1.1rem;
         }
 
-        /* 7. Appointment CTA (Form) */
+        /* 8. Appointment CTA (Form) */
         .cta-section {
             text-align: center;
             color: var(--text-dark);
@@ -871,7 +913,7 @@
             box-shadow: 0 15px 35px rgba(37, 211, 102, 0.5);
         }
 
-        /* 8. Footer */
+        /* 9. Footer */
         footer {
             background-color: var(--primary-green);
             color: var(--text-light);
@@ -1026,6 +1068,12 @@
                 grid-template-columns: repeat(2, 1fr); 
                 gap: 12px;
             }
+            
+            /* Ensure Certificates adapt nicely on mobile */
+            .certificates-grid {
+                grid-template-columns: 1fr;
+            }
+
             .treatment-card, .feature-block {
                 padding: 20px 10px; /* Reduced padding to fit 2 cols */
             }
@@ -1067,6 +1115,7 @@
             <li><a href="#about">About</a></li>
             <li><a href="#treatments">Treatments</a></li>
             <li><a href="#why-us">Why Us</a></li>
+            <li><a href="#certificates">Certificates</a></li>
             <li><a href="#testimonials">Reviews</a></li>
             <li><a href="#location">Location</a></li>
             <li><a href="#book" class="btn btn-gold" style="color:var(--text-dark); padding: 8px 20px;">Book Now</a></li>
@@ -1203,7 +1252,50 @@
         </div>
     </section>
 
-    <!-- 5. Social Proof & Realistic Testimonials -->
+    <!-- 5. Certificates & Licenses -->
+    <section class="certificates" id="certificates">
+        <div class="section-header animate-on-scroll">
+            <h2 class="heading-gold-underline">Licenses & Certifications</h2>
+            <p>Recognized expertise and official accreditations ensuring the highest standards of authentic care.</p>
+        </div>
+
+        <div class="certificates-grid">
+            <!-- Image 1 -->
+            <div class="cert-card animate-on-scroll">
+                <img src="IMG-20260330-WA0016.jpg.jpeg" alt="Rajiv Gandhi University - BAMS Certificate">
+            </div>
+            <!-- Image 2 -->
+            <div class="cert-card animate-on-scroll delay-1">
+                <img src="1774821091521~2.png" alt="Government of Karnataka - Certificate of Registration">
+            </div>
+            <!-- Image 3 -->
+            <div class="cert-card animate-on-scroll delay-2">
+                <img src="IMG-20260330-WA0010.jpg.jpeg" alt="Advanced Certification in Dermatology">
+            </div>
+            <!-- Image 4 -->
+            <div class="cert-card animate-on-scroll delay-3">
+                <img src="IMG-20260330-WA0008.jpg.jpeg" alt="Certificate Course in Cosmetology & Facial Aesthetic">
+            </div>
+            <!-- Image 5 -->
+            <div class="cert-card animate-on-scroll">
+                <img src="IMG-20260330-WA0009.jpg.jpeg" alt="Application of Trisootra Principles in Ayurveda Dermatology">
+            </div>
+            <!-- Image 6 -->
+            <div class="cert-card animate-on-scroll delay-1">
+                <img src="IMG-20260330-WA0007.jpg.jpeg" alt="Psoriasis Management Mastery in Ayurveda">
+            </div>
+            <!-- Image 7 -->
+            <div class="cert-card animate-on-scroll delay-2">
+                <img src="1774821466122~2.png" alt="Karnatak University - Certificate Course in Yoga Studies">
+            </div>
+            <!-- Image 8 -->
+            <div class="cert-card animate-on-scroll delay-3">
+                <img src="1774821612988~2.png" alt="St. John Ambulance - First Aid Professional">
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. Social Proof & Realistic Testimonials -->
     <section class="social-proof" id="testimonials">
         <div class="section-header animate-on-scroll">
             <h2 class="heading-gold-underline">Results That Speak</h2>
@@ -1349,7 +1441,7 @@
         </div>
     </section>
 
-    <!-- 6. Clinic Location (Replaced Map with Card) -->
+    <!-- 7. Clinic Location (Replaced Map with Card) -->
     <section class="location" id="location">
         <div class="section-header animate-on-scroll">
             <h2 class="heading-gold-underline">Visit Our Clinic</h2>
@@ -1375,7 +1467,7 @@
         </div>
     </section>
 
-    <!-- 7. Smart Appointment Booking Form CTA -->
+    <!-- 8. Smart Appointment Booking Form CTA -->
     <section class="cta-section" id="book">
         <div class="booking-form-wrapper animate-on-scroll">
             <h3>Begin Your Transformation</h3>
@@ -1404,7 +1496,7 @@
         </div>
     </section>
 
-    <!-- 8. Footer -->
+    <!-- 9. Footer -->
     <footer>
         <div class="footer-grid">
             <div class="footer-about">
@@ -1418,6 +1510,7 @@
                     <li><a href="#home">Home</a></li>
                     <li><a href="#about">About Dr. Karthik</a></li>
                     <li><a href="#treatments">Our Treatments</a></li>
+                    <li><a href="#certificates">Certificates</a></li>
                     <li><a href="#testimonials">Success Stories</a></li>
                 </ul>
             </div>
